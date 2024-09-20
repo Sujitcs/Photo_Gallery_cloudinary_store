@@ -5,7 +5,7 @@ import ImageCard from '../components/ImageCard';
 import { toast } from 'react-toastify';
 import '../styles/category.css';
 
-const url = 'http://localhost:5000'; // Keep this for API calls
+const url = 'https://photo-gallery-cloudinary.onrender.com';
 
 const Category = () => {
     const { category } = useParams();
@@ -19,7 +19,7 @@ const Category = () => {
                 setImages(response.data);
             } catch (error) {
                 toast.error(`Failed to load images for category: ${category}`);
-                console.error(error); // Log the error for debugging
+                
             }
         };
         fetchImagesByCategory();
