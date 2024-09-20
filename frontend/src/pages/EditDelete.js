@@ -3,7 +3,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import '../styles/editdelete.css';
 
-const url = 'http://localhost:5000'; // Keep this for API calls
+const url = 'https://photo-gallery-cloudinary.onrender.com';
 
 const EditDelete = () => {
     const [images, setImages] = useState([]);
@@ -24,7 +24,7 @@ const EditDelete = () => {
                 setImages(response.data);
             } catch (error) {
                 toast.error('Failed to load images');
-                console.error(error); // Log the error for debugging
+                
             }
         };
 
@@ -38,7 +38,7 @@ const EditDelete = () => {
                 setCategories(response.data);
             } catch (error) {
                 toast.error('Failed to load categories');
-                console.error(error); // Log the error for debugging
+                
             }
         };
 
@@ -57,7 +57,7 @@ const EditDelete = () => {
             toast.success('Image deleted successfully');
         } catch (error) {
             toast.error('Failed to delete image');
-            console.error(error); // Log the error for debugging
+            
         }
     };
 
@@ -83,7 +83,7 @@ const EditDelete = () => {
             setEditImage(null); // Close the modal
         } catch (error) {
             toast.error('Failed to update image');
-            console.error(error); // Log the error for debugging
+            
         }
     };
 
