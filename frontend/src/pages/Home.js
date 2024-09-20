@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/homepage.css';
 
-const url = 'http://localhost:5000'; // Keep this for API calls
+const url = 'https://photo-gallery-cloudinary.onrender.com';
 
 const Home = () => {
     const [images, setImages] = useState([]);
