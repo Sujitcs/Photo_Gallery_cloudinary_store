@@ -4,7 +4,7 @@ import '../styles/imagecard.css';
 const ImageCard = ({ image, onClick }) => {
     return (
         <div className="image-card" onClick={() => onClick(image)}>
-            <img src={image.image} alt={image.name} /> {/* Use the direct URL from Cloudinary */}
+            <img src={image.image} alt={image.name} />
         </div>
     );
 };
