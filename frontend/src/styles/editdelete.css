@@ -1,0 +1,147 @@
+/* Main Page Styling */
+.edit-delete-page {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    /* background: white; */
+}
+
+/* Card Styling */
+.edit-delete-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    background: rgb(145, 242, 229);
+    text-align: center;
+}
+
+.edit-delete-card img {
+    width: 50%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.edit-delete-card h3 {
+    margin: 10px 0 5px;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.edit-delete-card p {
+    margin: 0;
+    font-size: 1rem;
+    color: #777;
+}
+
+.edit-delete-card button {
+    margin: 10px 5px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.edit-delete-card button:first-of-type {
+    background-color: #007bff;
+    color: white;
+}
+
+.edit-delete-card button:first-of-type:hover {
+    background-color: #0056b3;
+}
+
+.edit-delete-card button:last-of-type {
+    background-color: #dc3545;
+    color: white;
+}
+
+.edit-delete-card button:last-of-type:hover {
+    background-color: #c82333;
+}
+
+/* Modal Styling */
+.editmodal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.editmodal-content {
+    /* background: white;
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center; */
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    position: relative;
+    width: 300px;
+}
+
+.editmodal-content h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.5rem;
+    color: #333;
+}
+.editmodal-content input, 
+.editmodal-content select {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+}
+
+.editmodal-content input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.editmodal-content button {
+    
+    margin: 10px 5px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.editmodal-content button:first-of-type {
+    background-color: #007bff;
+    color: white;
+}
+
+.editmodal-content button:first-of-type:hover {
+    background-color: #0056b3;
+}
+
+.editmodal-content button:last-of-type {
+    background-color: #dc3545;
+    color: white;
+}
+
+.editmodal-content button:last-of-type:hover {
+    background-color: #c82333;
+}
+

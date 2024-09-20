@@ -1,0 +1,78 @@
+/* General Page Styling */
+.login-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 86vh; 
+    width: 97vw; 
+    /* background: #62e3efa4; */
+    padding: 20px;
+    margin: 0;
+}
+
+/* Center and Style h2 Tag */
+.login-page h2 {
+    text-align: center;
+    margin-bottom: 20px; /* Adds space between the heading and the form */
+    color: rgb(12, 227, 169); /* Dark blue color for the text */
+    font-size: 24px; /* Adjust size as needed */
+}
+
+/* Login Form Container */
+.login-page form {
+    background-color: rgba(3, 47, 31, 0.893); /* Dark greenish background for the form */
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Form Input Fields */
+.login-page input[type="email"],
+.login-page input[type="password"] {
+    width: 90%;
+    padding: 12px;
+    margin: 15px 0;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.login-page input[type="email"]:focus,
+.login-page input[type="password"]:focus {
+    border-color: #007bff; /* Light blue color on focus */
+}
+
+/* Login Button */
+.login-page button {
+    display: block;
+    width: 97%;
+    padding: 14px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.login-page button:hover {
+    background-color: #062f5b; /* Darker blue on hover */
+}
+
+/* Placeholder Styling */
+.login-page input::placeholder {
+    color: #888;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .login-page form {
+        padding: 30px;
+    }
+}

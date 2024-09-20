@@ -1,0 +1,129 @@
+.add-category-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 440px;
+    margin: 0 auto;
+    margin-top: 5%;
+    padding: 20px;
+    background: #f4f4f4;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.add-category-page h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.add-category-page form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.add-category-page input {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.add-category-page button {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.add-category-page button:hover {
+    background-color: #0056b3;
+}
+
+.category-list {
+    width: 100%;
+}
+
+.category-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    background: #fff;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.edit-category-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.edit-category-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.edit-category-content input {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: calc(100% - 20px);
+}
+
+.edit-category-content button {
+    margin-right: 10px;
+}
+.category-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    background: #fff;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.category-item-buttons {
+    display: flex;
+    gap: 10px; /* Space between the buttons */
+}
+
+.category-item button {
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.category-item button:hover {
+    background-color: #0056b3;
+}
+
+.category-item button.delete-button {
+    background-color: #dc3545;
+}
+
+.category-item button.delete-button:hover {
+    background-color: #c82333;
+}
