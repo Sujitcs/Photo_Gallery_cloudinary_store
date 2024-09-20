@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import '../styles/login.css';
 
-const url='http://localhost:5000';
+const url='https://photo-gallery-cloudinary.onrender.com';
 
 const Login = ({ setIsLoggedIn }) => {
     
