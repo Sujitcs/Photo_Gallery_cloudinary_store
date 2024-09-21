@@ -4,8 +4,7 @@ import ImageCard from '../components/ImageCard';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/homepage.css';
-
-const url = 'https://photo-gallery-cloudinary.onrender.com';
+import { url } from '../components/Base_url';
 
 const Home = () => {
     const [images, setImages] = useState([]);
