@@ -8,15 +8,16 @@ import { url } from '../components/Base_url';
 const AddPhoto = () => {
     const [name, setName] = useState('');
     const [category, setCategory] = useState('');
-    const [images, setImages] = useState([]);
+    const [images, setImages] = useState([]); // Update state to handle multiple files
     const [categories, setCategories] = useState([]);
     const navigate = useNavigate();
+
     const token = localStorage.getItem('token');
 
     useEffect(() => {
         const fetchCategories = async () => {
             try {
-                const response = await axios.get(`${url}/api/list`, {
+                const response = await axios.get(url + '/api/list', {
                     headers: {
                         'Authorization': `Bearer ${token}`,
                     },
@@ -32,6 +33,7 @@ const AddPhoto = () => {
     const handleImageUpload = async (e) => {
         e.preventDefault();
 
+        // Check if images are selected and all of them are valid types
         if (images.length === 0) {
             toast.error('Please select at least one image.');
             return;
@@ -49,9 +51,9 @@ const AddPhoto = () => {
         formData.append('name', name);
         formData.append('category', category);
 
-        // Append all selected images to formData
-        images.forEach((img) => {
-            formData.append('images', img); // Update to match backend expectation
+        // Append all selected images to the formData
+        images.forEach((img, index) => {
+            formData.append('image', img); // Note: 'image' is the same as in the backend multer config
         });
 
         if (!token) {
@@ -60,7 +62,7 @@ const AddPhoto = () => {
         }
 
         try {
-            await axios.post(`${url}/api/addimage`, formData, {
+            await axios.post(url + '/api/addimage', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     'Authorization': `Bearer ${token}`,
@@ -70,7 +72,7 @@ const AddPhoto = () => {
             toast.success('Images uploaded successfully');
             setName('');
             setCategory('');
-            setImages([]);
+            setImages([]); // Reset the images state after successful upload
             navigate('/');
         } catch (error) {
             if (error.response && error.response.status === 401) {
@@ -106,8 +108,8 @@ const AddPhoto = () => {
                 <input
                     type="file"
                     accept="image/jpeg, image/jpg, image/png"
-                    multiple
-                    onChange={(e) => setImages([...e.target.files])}
+                    multiple // Allow multiple file selection
+                    onChange={(e) => setImages([...e.target.files])} // Store selected files in state
                     required
                 />
                 <button type="submit">Upload Photos</button>
