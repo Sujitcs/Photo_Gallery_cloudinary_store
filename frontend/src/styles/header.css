@@ -54,7 +54,6 @@ body {
 
 .header-right .dropbtn {
     background-color: #f0a0a0;
-    
     color: rgb(13, 12, 12);
     padding: 10px;
     border: none;
@@ -121,24 +120,30 @@ body {
 /* .social-icon[href*="facebook"]:hover {
     color: #3b5998;
 } */
+div.social-icons{
+    display: contents;
+}
 
-/* Styles for screen widths below 768px */
-@media screen and (max-width: 768px) {
+/* Styles for screen widths below 600px */
+@media screen and (max-width: 600px) {
     .header-right {
-        display: none;
+        display: none; /* Hide header-right by default */
         flex-direction: column;
         align-items: flex-start;
         position: absolute;
         top: 60px;
         right: 0;
-        background-color: #b4abab;
-        width: 50%;
+        background-color: #83edf4;
+        width: 40%;
         padding: 10px;
+    }
+
+    .header-right.open {
+        display: flex;
     }
 
     .header-right a, 
     .header-right button {
-        
         text-align: left;
         padding: 10px 20px;
         margin: 5px 0;
@@ -148,7 +153,15 @@ body {
         display: block;
     }
 
-    .header-right.open {
+    .header-right button {
+        background-color: #83edf4;
+    }
+
+    .header-right .dropbtn {
+        background-color: #83edf4;
+    }
+
+    div.social-icons{
         display: flex;
     }
 }
@@ -156,15 +169,23 @@ body {
 /* Styles for screen widths below 480px */
 @media screen and (max-width: 480px) {
     .header-right {
-        width: 50%;
+        width: 40%;
         top: 50px; 
         padding: 20px; 
+        background-color: #83edf4;
+    }
+    .header-right .dropbtn {
+        background-color: #83edf4;
     }
 
     .header-right a, 
     .header-right button {
         padding: 15px 30px; 
         font-size: 1.2rem;
+    }
+
+    .header-right button {
+        background-color: #83edf4;
     }
 
     .header-left {
@@ -175,20 +196,15 @@ body {
         font-size: 1.5rem; 
     }
 
-    .social-icon {
-        font-size: 2rem;
-        display: block;
-        margin: 10px 0;
-    }
-
     .header-right .dropdown-content a {
         font-size: 1rem; 
         padding: 10px 15px;
     }
-
-    /* Reduce spacing between links */
     .header-right a,
     .header-right button {
         margin: 5px 0;
+    }
+    div.social-icons{
+        display: flex;
     }
 }
