@@ -2,8 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import '../styles/addcategory.css';
-
-const url='https://photo-gallery-cloudinary.onrender.com';
+import { url } from '../components/Base_url';
 
 const AddCategory = () => {
     const [name, setName] = useState('');
