@@ -8,7 +8,7 @@ import { url } from '../components/Base_url';
 const AddPhoto = () => {
     const [name, setName] = useState('');
     const [category, setCategory] = useState('');
-    const [images, setImages] = useState([]); // Update to handle multiple images
+    const [images, setImages] = useState([]); // Update state to handle multiple files
     const [categories, setCategories] = useState([]);
     const navigate = useNavigate();
 
@@ -30,36 +30,31 @@ const AddPhoto = () => {
         fetchCategories();
     }, [token]);
 
-    // Handle multiple file selection
-    const handleImageChange = (e) => {
-        const selectedFiles = Array.from(e.target.files);
-        setImages(selectedFiles);
-    };
-
     const handleImageUpload = async (e) => {
         e.preventDefault();
 
+        // Check if images are selected and all of them are valid types
         if (images.length === 0) {
-            toast.error('Please select at least one image to upload.');
+            toast.error('Please select at least one image.');
             return;
         }
 
-        // Check if all files are valid image types
-        const invalidFiles = images.filter(
-            (file) => !['image/jpeg', 'image/jpg', 'image/png'].includes(file.type)
-        );
-
-        if (invalidFiles.length > 0) {
-            toast.error('Only JPEG(JPG) and PNG files are accepted!');
-            return;
+        const validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+        for (let img of images) {
+            if (!validTypes.includes(img.type)) {
+                toast.error('Only JPEG (JPG) and PNG files are accepted!');
+                return;
+            }
         }
 
         const formData = new FormData();
         formData.append('name', name);
         formData.append('category', category);
 
-        // Append each image to the form data
-        images.forEach((image) => formData.append('images', image));
+        // Append all selected images to the formData
+        images.forEach((img, index) => {
+            formData.append('image', img); // Note: 'image' is the same as in the backend multer config
+        });
 
         if (!token) {
             toast.error('No token found, please log in.');
@@ -77,7 +72,7 @@ const AddPhoto = () => {
             toast.success('Images uploaded successfully');
             setName('');
             setCategory('');
-            setImages([]); // Clear images after successful upload
+            setImages([]); // Reset the images state after successful upload
             navigate('/');
         } catch (error) {
             if (error.response && error.response.status === 401) {
@@ -112,9 +107,9 @@ const AddPhoto = () => {
                 </select>
                 <input
                     type="file"
-                    accept="image/jpeg,image/jpg,image/png"
-                    multiple // Enable multiple file selection
-                    onChange={handleImageChange}
+                    accept="image/jpeg, image/jpg, image/png"
+                    multiple // Allow multiple file selection
+                    onChange={(e) => setImages([...e.target.files])} // Store selected files in state
                     required
                 />
                 <button type="submit">Upload Photos</button>
