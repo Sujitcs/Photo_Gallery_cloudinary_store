@@ -3,8 +3,7 @@ import { Link } from 'react-router-dom';
 import { FaInstagram, FaFacebook, FaBars } from 'react-icons/fa';
 import axios from 'axios';
 import '../styles/header.css';
-
-const url='https://photo-gallery-cloudinary.onrender.com';
+import { url } from '../components/Base_url';
 
 const Header = ({ isLoggedIn, logout }) => {
     const [categories, setCategories] = useState([]);
