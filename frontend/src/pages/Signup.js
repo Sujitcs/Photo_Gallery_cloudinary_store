@@ -3,8 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import '../styles/signup.css';
-
-const url='https://photo-gallery-cloudinary.onrender.com';
+import { url } from '../components/Base_url';
 
 const Signup = () => {
     const [name, setName] = useState('');
