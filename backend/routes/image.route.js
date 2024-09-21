@@ -24,23 +24,24 @@ const storage = new CloudinaryStorage({
       const fileFormat = file.mimetype.split('/')[1];
       return allowedFormats.includes(fileFormat) ? fileFormat : 'jpeg'; // Default to 'jpeg'
     },
-    public_id: (req, file) => file.originalname.split('.')[0], // Name to save in Cloudinary
+    public_id: (req, file) => `${file.originalname.split('.')[0]}_${Date.now()}`, // Unique name with timestamp
   },
 });
 
-const upload = multer({ 
+const upload = multer({
   storage: storage,
   fileFilter: (req, file, cb) => {
     const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
     if (allowedTypes.includes(file.mimetype)) {
       cb(null, true); // Accept file
     } else {
-      cb(new Error('Only JPEG and PNG files are allowed!'), false);
+      cb(new multer.MulterError('LIMIT_UNEXPECTED_FILE', file), false); // Descriptive error for file type
     }
   },
 });
+
 // Add Multiple Images
-imagerouter.post('/addimage', auth, upload.array('images', 10), async (req, res) => {
+imagerouter.post('/addimage', auth, upload.array('image', 10), async (req, res) => {
   const { name, category } = req.body;
 
   if (!req.files || req.files.length === 0) {
@@ -48,27 +49,14 @@ imagerouter.post('/addimage', auth, upload.array('images', 10), async (req, res)
   }
 
   try {
-    // Array to hold all new image documents to be created
-    const newImages = [];
+    const newImages = req.files.map(file => ({
+      name,
+      category,
+      image: file.path, // URL of the uploaded image in Cloudinary
+      public_id: file.filename, // Cloudinary public_id for later deletion
+    }));
 
-    // Iterate through each uploaded file
-    for (const file of req.files) {
-      // Use the Cloudinary URL and public_id from each file
-      const image = file.path; // URL of the uploaded image in Cloudinary
-      const public_id = file.filename; // Cloudinary public_id for later deletion
-
-      // Create a new image document and push it to the newImages array
-      const newImage = {
-        name,
-        category,
-        image,
-        public_id,
-      };
-      newImages.push(newImage);
-    }
-    // Save all new images to the database at once
     const savedImages = await imagemodel.insertMany(newImages);
-
     res.status(201).json(savedImages);
   } catch (error) {
     console.error('Error uploading images:', error);
@@ -76,67 +64,56 @@ imagerouter.post('/addimage', auth, upload.array('images', 10), async (req, res)
   }
 });
 
-// Add Image
-// imagerouter.post('/addimage', auth, upload.single('image'), async (req, res) => {
-//   const { name, category } = req.body;
+// Edit Multiple Images
+imagerouter.put('/editimage/:id', auth, upload.array('image', 10), async (req, res) => {
+  const { imageIds, name, category } = req.body;
 
-//   try {
-//     // Use the Cloudinary URL and public_id from req.file
-//     const image = req.file.path; // URL of the uploaded image in Cloudinary
-//     const public_id = req.file.filename; // Cloudinary public_id for later deletion
-
-//     const newImage = await imagemodel.create({ name, category, image, public_id });
-
-//     res.status(201).json(newImage);
-//   } catch (error) {
-//     res.status(500).json({ message: 'Server Error' });
-//   }
-// });
-
-// Edit Image
-// Edit Image
-imagerouter.put('/editimage/:id', auth, upload.single('image'), async (req, res) => {
-  const { id } = req.params;
-  const { name, category } = req.body;
-  const image = req.file ? req.file.path : null;
-  const public_id = req.file ? req.file.filename : null;
+  if (!imageIds || !Array.isArray(imageIds)) {
+    return res.status(400).json({ message: 'No image IDs provided' });
+  }
 
   try {
-    const existingImage = await imagemodel.findById(id);
+    const updatedImages = [];
 
-    if (!existingImage) {
-      return res.status(404).json({ message: 'Image not found' });
+    for (let i = 0; i < imageIds.length; i++) {
+      const id = imageIds[i];
+      const existingImage = await imagemodel.findById(id);
+
+      if (!existingImage) {
+        return res.status(404).json({ message: `Image with ID ${id} not found` });
+      }
+
+      // Prepare the updated data
+      const updatedImageData = { name, category };
+
+      // Check if a new file was uploaded for this image
+      if (req.files && req.files[i]) {
+        // Delete the old image from Cloudinary
+        await cloudinary.uploader.destroy(existingImage.public_id);
+        updatedImageData.image = req.files[i].path; // New image URL
+        updatedImageData.public_id = req.files[i].filename; // New public_id
+      }
+
+      // Update the image in the database
+      const updatedImage = await imagemodel.findByIdAndUpdate(id, updatedImageData, { new: true });
+      updatedImages.push(updatedImage);
     }
 
-    // Prepare the updated data
-    const updatedImageData = { name, category };
-
-    if (image) {
-      // Delete the old image from Cloudinary
-      await cloudinary.uploader.destroy(existingImage.public_id);
-      updatedImageData.image = image;
-      updatedImageData.public_id = public_id;
-    }
-
-    // Update the image data in MongoDB
-    const updatedImage = await imagemodel.findByIdAndUpdate(id, updatedImageData, { new: true });
-
-    res.status(200).json({ message: 'Image updated successfully', image: updatedImage });
+    res.status(200).json({ message: 'Images updated successfully', images: updatedImages });
   } catch (error) {
-    console.error('Failed to update image:', error);
-    res.status(500).json({ message: 'Failed to update image', error: error.message });
+    console.error('Failed to update images:', error);
+    res.status(500).json({ message: 'Failed to update images', error: error.message });
   }
 });
-
 
 // Get all images
 imagerouter.get('/getimage', async (req, res) => {
   try {
     const images = await imagemodel.find({});
-    console.log('Fetched images:', images); // Log the images
     res.json(images);
   } catch (error) {
-    res.status(500).json({ message: 'Server Error' });
+    console.error('Error fetching images:', error);
+    res.status(500).json({ message: 'Server Error', error: error.message });
   }
 });
 
@@ -145,9 +122,10 @@ imagerouter.get('/getimage/:category', async (req, res) => {
   const category = req.params.category;
   try {
     const images = await imagemodel.find({ category });
-    res.json(images); // Ensure this returns the correct URLs
+    res.json(images);
   } catch (error) {
-    res.status(500).json({ message: 'Server Error' });
+    console.error('Error fetching images by category:', error);
+    res.status(500).json({ message: 'Server Error', error: error.message });
   }
 });
 
@@ -156,27 +134,18 @@ imagerouter.delete('/deleteimage/:id', auth, async (req, res) => {
   const { id } = req.params;
 
   try {
-    // Find the image document first
-    const image = await imagemodel.findByIdAndDelete(id);
-
-    if (image) {
-      // Extract public_id for the image to delete from Cloudinary
-      const publicId = image.public_id;
-
-      // Remove the file from Cloudinary
-      cloudinary.uploader.destroy(publicId, (err, result) => {
-        if (err) {
-          console.error('Error deleting image from Cloudinary:', err);
-          return res.status(500).json({ message: 'Image removed from database but failed to delete file from Cloudinary' });
-        }
-        console.log('Image deleted from Cloudinary:', result);
-        res.json({ message: 'Image removed' });
-      });
-    } else {
-      res.status(404).json({ message: 'Image not found' });
+    const image = await imagemodel.findById(id);
+    if (!image) {
+      return res.status(404).json({ message: 'Image not found' });
     }
+
+    await cloudinary.uploader.destroy(image.public_id);
+    await imagemodel.findByIdAndDelete(id);
+
+    res.json({ message: 'Image removed successfully' });
   } catch (error) {
-    res.status(500).json({ message: 'Server Error' });
+    console.error('Error deleting image:', error);
+    res.status(500).json({ message: 'Server Error', error: error.message });
   }
 });
 
