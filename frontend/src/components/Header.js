@@ -40,7 +40,7 @@ const Header = ({ isLoggedIn, logout }) => {
     return (
         <header className="header">
             <div className="header-left">
-                <span role="img" aria-label="camera">📸</span>
+                <span role="img" aria-label="camera" className='camera'>📸Srijani's Canvas</span>
             </div>
             
             <button className="hamburger" onClick={toggleMenu}>
