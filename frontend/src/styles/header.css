@@ -29,7 +29,9 @@ body {
     align-items: center;
     margin-right: 10px;
 }
-
+.camera{
+    color: #3c0417;
+}
 .header-right a,
 .header-right button {
     margin-left: 5px;
