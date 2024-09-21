@@ -18,13 +18,13 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: 'photogallery', // Folder name in Cloudinary where images will be stored
+    folder: 'photogallery',
     format: async (req, file) => {
       const allowedFormats = ['jpeg', 'png', 'jpg'];
       const fileFormat = file.mimetype.split('/')[1];
-      return allowedFormats.includes(fileFormat) ? fileFormat : 'jpeg'; // Default to 'jpeg'
+      return allowedFormats.includes(fileFormat) ? fileFormat : 'jpeg';
     },
-    public_id: (req, file) => `${file.originalname.split('.')[0]}_${Date.now()}`, // Unique name with timestamp
+    public_id: (req, file) => `${file.originalname.split('.')[0]}_${Date.now()}`,
   },
 });
 
@@ -33,9 +33,9 @@ const upload = multer({
   fileFilter: (req, file, cb) => {
     const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
     if (allowedTypes.includes(file.mimetype)) {
-      cb(null, true); // Accept file
+      cb(null, true);
     } else {
-      cb(new multer.MulterError('LIMIT_UNEXPECTED_FILE', file), false); // Descriptive error for file type
+      cb(new multer.MulterError('LIMIT_UNEXPECTED_FILE', file), false);
     }
   },
 });
@@ -52,8 +52,8 @@ imagerouter.post('/addimage', auth, upload.array('image', 10), async (req, res) 
     const newImages = req.files.map(file => ({
       name,
       category,
-      image: file.path, // URL of the uploaded image in Cloudinary
-      public_id: file.filename, // Cloudinary public_id for later deletion
+      image: file.path,
+      public_id: file.filename,
     }));
 
     const savedImages = await imagemodel.insertMany(newImages);
