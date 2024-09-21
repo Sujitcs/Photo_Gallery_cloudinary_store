@@ -3,8 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import '../styles/addphoto.css';
-
-const url='https://photo-gallery-cloudinary.onrender.com';
+import { url } from '../components/Base_url';
 
 const AddPhoto = () => {
     const [name, setName] = useState('');
