@@ -1,4 +1,4 @@
-site live on--https://photo-gallery-cloudinary.vercel.app/
+site live on--https://srijani-bandyopadhya.vercel.app/
 
 
 https://github.com/user-attachments/assets/c58999ce-4797-4d90-be4d-73ec4c39e4ca
